@@ -1,11 +1,10 @@
 # csvq
 
-> 用 SQL 查询 CSV:**零依赖、单命令、即写即查**。
-> 标准库 `sqlite3` 内存执行,列类型自动推断,终端表格中文对齐,还能画条形图。
+> 用 SQL 查询 CSV:**单命令、即写即查**。基于标准库 sqlite3;唯一依赖是自研微库 [cjktable](https://github.com/JAKE1266/cjktable)(终端中文对齐排版)。
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
+![Dependencies](https://img.shields.io/badge/dependencies-cjktable%20%28self--built%29-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
 ## ✨ 特性
@@ -106,7 +105,7 @@ csvq/
 │   ├── core/
 │   │   ├── importer.py        # CSV → SQLite:类型推断、NULL 处理、只读锁
 │   │   ├── render.py          # CJK 对齐表格与条形图
-│   │   └── util.py            # 双宽字符排版辅助
+│   │   └── util.py            # 单元格格式化(排版原语来自 cjktable)
 │   └── cli.py                 # 命令行入口
 ├── tests/                     # 29 个单元测试(unittest 免安装可跑)
 └── pyproject.toml

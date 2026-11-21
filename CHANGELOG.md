@@ -5,6 +5,9 @@
 
 ## [1.0.0] - 2026-11-21
 
+### 变更
+- 终端排版(CJK 对齐 / 截断)改用自研微库 [cjktable](https://github.com/JAKE1266/cjktable),删除内嵌实现
+
 ### 新增
 - CSV 一键导入内存 SQLite:列类型自动推断(INTEGER / REAL / TEXT),空单元格转 NULL
 - 完整 SQL 能力:GROUP BY / 聚合 / JOIN / CTE / 子查询(基于标准库 sqlite3)
