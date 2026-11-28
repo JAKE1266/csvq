@@ -3,6 +3,9 @@
 import contextlib
 import io
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -124,6 +127,34 @@ class CliTest(unittest.TestCase):
         code, out, err = self.run_cli(str(cn), 'SELECT "城市" FROM cn WHERE "销售额" > 200')
         self.assertEqual(code, 0, err)
         self.assertIn("上海", out)
+
+    def run_legacy_cli(self, *args):
+        env = os.environ.copy()
+        env.update(
+            PYTHONIOENCODING="cp1252",
+            PYTHONUTF8="0",
+            PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src"),
+        )
+        return subprocess.run(
+            [sys.executable, "-m", "csvq", *args],
+            env=env,
+            capture_output=True,
+        )
+
+    def test_legacy_encoding_help(self):
+        result = self.run_legacy_cli("--help")
+        self.assertEqual(result.returncode, 0, result.stderr.decode("utf-8", errors="replace"))
+        self.assertIn("用 SQL 查询 CSV", result.stdout.decode("utf-8"))
+
+    def test_legacy_encoding_json_output(self):
+        result = self.run_legacy_cli(
+            str(self.csv),
+            "SELECT region, SUM(amount) AS total FROM sales GROUP BY region ORDER BY total DESC",
+            "--json",
+        )
+        self.assertEqual(result.returncode, 0, result.stderr.decode("utf-8", errors="replace"))
+        data = json.loads(result.stdout.decode("utf-8"))
+        self.assertEqual(data["rows"][0], ["华南", 300])
 
     def test_cjk_alignment(self):
         code, out, _ = self.run_cli(str(self.csv), "SELECT product, amount FROM sales LIMIT 2")

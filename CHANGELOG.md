@@ -3,6 +3,18 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式,
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.0.1] - 2026-11-28
+
+### 修复
+- cjktable 改为 `csvq._vendor.cjktable` 私有 vendor,移除 Git 运行时依赖与顶级包冲突
+- CLI 标准流固定 UTF-8,修复 cp1252 旧编码环境下中文帮助和查询输出崩溃
+- sdist 补齐 CHANGELOG、测试与 vendor 许可证
+
+### 新增
+- 31 个单元测试,新增旧编码环境回归
+- 已安装 wheel 仓库外冒烟测试
+- GitHub Actions 真实 wheel:Ubuntu / Windows / macOS × Python 3.9–3.13
+
 ## [1.0.0] - 2026-11-21
 
 ### 变更

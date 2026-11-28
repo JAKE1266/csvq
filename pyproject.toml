@@ -4,14 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "csvq"
-version = "1.0.0"
+version = "1.0.1"
 description = "csvq —— 用 SQL 查询 CSV 的零依赖命令行工具:内存 SQLite、列类型自动推断、终端表格/条形图"
 readme = "README.md"
 requires-python = ">=3.9"
-dependencies = [
-    # 自研终端排版微库(CJK 对齐),与项目集共同维护
-    "cjktable @ git+https://github.com/JAKE1266/cjktable.git",
-]
 license = { text = "MIT" }
 authors = [{ name = "JAKE1266" }]
 keywords = ["csv", "sql", "sqlite", "cli", "data-analysis", "query"]
@@ -41,3 +37,6 @@ csvq = "csvq.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"csvq._vendor.cjktable" = ["LICENSE"]
