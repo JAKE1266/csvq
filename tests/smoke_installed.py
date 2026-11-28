@@ -80,7 +80,7 @@ def main() -> None:
         assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
         assert json.loads(result.stdout.decode("utf-8"))["rows"][0] == ["华南", 300]
 
-    print(f"csvq {EXPECTED_VERSION} 已安装 wheel 冒烟测试通过")
+    print(f"csvq {EXPECTED_VERSION} installed wheel smoke test passed")
 
 
 if __name__ == "__main__":
