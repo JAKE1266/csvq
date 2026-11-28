@@ -1,10 +1,10 @@
 # csvq
 
-> 用 SQL 查询 CSV:**单命令、即写即查**。基于标准库 sqlite3;唯一依赖是自研微库 [cjktable](https://github.com/JAKE1266/cjktable)(终端中文对齐排版)。
+> 用 SQL 查询 CSV:**单命令、即写即查**。基于标准库 sqlite3;零第三方运行时依赖,终端中文对齐由私有 vendor 的 [cjktable](https://github.com/JAKE1266/cjktable) 提供。
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Dependencies](https://img.shields.io/badge/dependencies-cjktable%20%28self--built%29-blue)
+![Dependencies](https://img.shields.io/badge/runtime%20dependencies-0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
 ## ✨ 特性
@@ -17,16 +17,17 @@
 - 🍴 **分隔符自适应**:逗号 / 分号 / 制表符 / 竖线自动嗅探,也可 `-d` 指定
 - 📚 **多表查询**:`users=users.csv orders.csv` 一库多表,直接 JOIN
 - 🔒 **只读安全**:导入后连接锁为 query_only,写语句一律拒绝
-- 🧪 **带测试**:29 个单元测试 + GitHub Actions 三系统 × 三 Python 版本 CI
+- 🧪 **带测试**:31 个单元测试 + 已安装 wheel 冒烟 + GitHub Actions 三系统 × 五 Python 版本 CI
 
 ## 📦 安装
 
 ```bash
 git clone https://github.com/JAKE1266/csvq.git
 cd csvq
-python -m csvq --help           # 克隆即用
+python -m pip install -e .       # 安装当前源码(开发)
+python -m csvq --help
 
-pip install .                   # 或安装为命令(获得 csvq 命令)
+python -m pip install .           # 或安装为命令(获得 csvq 命令)
 ```
 
 ## 🚀 快速上手
@@ -105,17 +106,20 @@ csvq/
 │   ├── core/
 │   │   ├── importer.py        # CSV → SQLite:类型推断、NULL 处理、只读锁
 │   │   ├── render.py          # CJK 对齐表格与条形图
-│   │   └── util.py            # 单元格格式化(排版原语来自 cjktable)
+│   │   └── util.py            # 单元格格式化(排版原语来自私有 vendor)
+│   ├── _vendor/cjktable/       # 私有 CJK 排版依赖,不污染顶级包命名空间
 │   └── cli.py                 # 命令行入口
-├── tests/                     # 29 个单元测试(unittest 免安装可跑)
+├── tests/                     # 31 个单元测试 + 已安装 wheel 冒烟
+├── MANIFEST.in                # sdist 清单
 └── pyproject.toml
 ```
 
 ## 🧪 开发与测试
 
 ```bash
-PYTHONPATH=src python -m unittest discover -s tests -v
-# Windows(PowerShell):$env:PYTHONPATH="src"; python -m unittest discover -s tests -v
+python -m pip install -e .
+python -m unittest discover -s tests -v
+# Windows(PowerShell):python -m pip install -e .; python -m unittest discover -s tests -v
 ```
 
 ## 🗺 路线图
@@ -130,4 +134,4 @@ PYTHONPATH=src python -m unittest discover -s tests -v
 
 ---
 
-*同系列项目:[PyToolBox](https://github.com/JAKE1266/py-toolbox) 多功能工具箱 · [CashBook](https://github.com/JAKE1266/cashbook) 命令行记账本 · [gitdash](https://github.com/JAKE1266/gitdash) Git 终端仪表盘 · [DevBox](https://github.com/JAKE1266/devbox) 前端开发工具箱 · [cjktable](https://github.com/JAKE1266/cjktable) CJK 排版微库 · [duviz](https://github.com/JAKE1266/duviz) 磁盘占用可视化 · [httpoke](https://github.com/JAKE1266/httpoke) HTTP 调试工具 · [mdown](https://github.com/JAKE1266/mdown) Markdown→HTML · [msite](https://github.com/JAKE1266/msite) 静态文档站 · [crony](https://github.com/JAKE1266/crony) cron 表达式解析 · [pomo](https://github.com/JAKE1266/pomo) 番茄钟 · [termplot](https://github.com/JAKE1266/termplot) 终端数据图表 · [filewatch](https://github.com/JAKE1266/filewatch) 目录变更监控 · [packpeek](https://github.com/JAKE1266/packpeek) 压缩包检查与安全解压 · [statline](https://github.com/JAKE1266/statline) 统计摘要 · [difftool](https://github.com/JAKE1266/difftool) 文本差异 · [wordfreq](https://github.com/JAKE1266/wordfreq) 词频统计 · [hexview](https://github.com/JAKE1266/hexview) 十六进制查看器 · [quicktodo](https://github.com/JAKE1266/quicktodo) 待办清单 · [envcheck](https://github.com/JAKE1266/envcheck) .env 校验 · [ipcalc](https://github.com/JAKE1266/ipcalc) 子网计算器 · [quickjournal](https://github.com/JAKE1266/quickjournal) 速记日志 · [csv2md](https://github.com/JAKE1266/csv2md) CSV→Markdown · [namecase](https://github.com/JAKE1266/namecase) 命名风格转换 · [dirsinc](https://github.com/JAKE1266/dirsinc) 目录增量同步 · [stopwatch](https://github.com/JAKE1266/stopwatch) 正计时秒表 · [wordwrap](https://github.com/JAKE1266/wordwrap) 按显示宽度换行 · [mdtoc](https://github.com/JAKE1266/mdtoc) Markdown 目录生成 · [checksum](https://github.com/JAKE1266/checksum) 批量校验和 · [gitignore-gen](https://github.com/JAKE1266/gitignore-gen) .gitignore 模板 · [filefind](https://github.com/JAKE1266/filefind) 文件搜索 · [filedupe](https://github.com/JAKE1266/filedupe) 重复文件查找 · [passgen](https://github.com/JAKE1266/passgen) 密码/口令生成 · [logparse](https://github.com/JAKE1266/logparse) 访问日志分析 · [batchrename](https://github.com/JAKE1266/batchrename) 批量重命名*
+*同系列项目:[PyToolBox](https://github.com/JAKE1266/py-toolbox) 多功能工具箱 · [CashBook](https://github.com/JAKE1266/cashbook) 命令行记账本 · [gitdash](https://github.com/JAKE1266/gitdash) Git 终端仪表盘 · [DevBox](https://github.com/JAKE1266/devbox) 前端开发工具箱 · [cjktable](https://github.com/JAKE1266/cjktable) CJK 排版微库 · [duviz](https://github.com/JAKE1266/duviz) 磁盘占用可视化 · [httpoke](https://github.com/JAKE1266/httpoke) HTTP 调试工具 · [mdown](https://github.com/JAKE1266/mdown) Markdown→HTML · [msite](https://github.com/JAKE1266/msite) 静态文档站 · [crony](https://github.com/JAKE1266/crony) cron 表达式解析 · [pomo](https://github.com/JAKE1266/pomo) 番茄钟 · [termplot](https://github.com/JAKE1266/termplot) 终端数据图表 · [filewatch](https://github.com/JAKE1266/filewatch) 目录变更监控 · [packpeek](https://github.com/JAKE1266/packpeek) 压缩包检查与安全解压 · [statline](https://github.com/JAKE1266/statline) 统计摘要 · [difftool](https://github.com/JAKE1266/difftool) 文本差异 · [wordfreq](https://github.com/JAKE1266/wordfreq) 词频统计 · [hexview](https://github.com/JAKE1266/hexview) 十六进制查看器 · [quicktodo](https://github.com/JAKE1266/quicktodo) 待办清单 · [envcheck](https://github.com/JAKE1266/envcheck) .env 校验 · [ipcalc](https://github.com/JAKE1266/ipcalc) 子网计算器 · [quickjournal](https://github.com/JAKE1266/quickjournal) 速记日志 · [csv2md](https://github.com/JAKE1266/csv2md) CSV→Markdown · [namecase](https://github.com/JAKE1266/namecase) 命名风格转换 · [dirsinc](https://github.com/JAKE1266/dirsinc) 目录增量同步 · [stopwatch](https://github.com/JAKE1266/stopwatch) 正计时秒表 · [wordwrap](https://github.com/JAKE1266/wordwrap) 按显示宽度换行 · [mdtoc](https://github.com/JAKE1266/mdtoc) Markdown 目录生成 · [checksum](https://github.com/JAKE1266/checksum) 批量校验和 · [gitignore-gen](https://github.com/JAKE1266/gitignore-gen) .gitignore 模板 · [filefind](https://github.com/JAKE1266/filefind) 文件搜索 · [filedupe](https://github.com/JAKE1266/filedupe) 重复文件查找 · [passgen](https://github.com/JAKE1266/passgen) 密码/口令生成 · [logparse](https://github.com/JAKE1266/logparse) 访问日志分析 · [batchrename](https://github.com/JAKE1266/batchrename) 批量重命名 · [srttool](https://github.com/JAKE1266/srttool) SRT 字幕工具*
